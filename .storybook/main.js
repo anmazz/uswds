@@ -27,23 +27,26 @@ const joinSassAssets = createJoinFunction(
 );
 
 module.exports = {
-  core: {
-    builder: "webpack5",
-  },
   stories: [
     "../packages/**/*.stories.mdx",
     "../packages/**/**/*.stories.@(js|jsx|ts|tsx)",
   ],
+
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/addon-a11y",
+    "@storybook/addon-webpack5-compiler-babel",
+    "@storybook/addon-styling-webpack"
   ],
+
   staticDirs: ['../dist'],
+
   webpackFinal: async (config, { configType }) => {
     // `configType` has a value of 'DEVELOPMENT' or 'PRODUCTION'
     // You can change the configuration based on that.
     // 'PRODUCTION' is used when building the static version of storybook.
+    config.devtool = 'source-map'
     config.module.rules.push(
       {
         test: /\.twig$/,
@@ -136,4 +139,11 @@ module.exports = {
 
     return config;
   },
+
+  framework: {
+    name: "@storybook/html-webpack5",
+    options: {}
+  },
+
+  docs: {}
 };
