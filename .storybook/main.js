@@ -15,15 +15,15 @@ const pathGenerator = asGenerator((item, ...rest) => [
   item.isAbsolute
     ? null
     : /\.(png|svg|jpg|jpeg|gif)$/.test(item.uri)
-    ? imageDirectory
-    : /\.(woff|woff2|eot|ttf|otf)$/.test(item.uri)
-    ? fontsDirectory
-    : null,
+      ? imageDirectory
+      : /\.(woff|woff2|eot|ttf|otf)$/.test(item.uri)
+        ? fontsDirectory
+        : null,
 ]);
 
 const joinSassAssets = createJoinFunction(
   "joinSassAssets",
-  createJoinImplementation(pathGenerator)
+  createJoinImplementation(pathGenerator),
 );
 
 module.exports = {
@@ -39,9 +39,7 @@ module.exports = {
     "@storybook/addon-webpack5-compiler-babel",
     "@storybook/addon-styling-webpack"
   ],
-
-  staticDirs: ['../dist'],
-
+  staticDirs: ["../dist"],
   webpackFinal: async (config, { configType }) => {
     // `configType` has a value of 'DEVELOPMENT' or 'PRODUCTION'
     // You can change the configuration based on that.
@@ -101,11 +99,8 @@ module.exports = {
             options: {
               sourceMap: true,
               sassOptions: {
-                includePaths: [
-                  "./packages",
-                  "./node_modules/@uswds"
-                ],
-                implementation: require("sass-embedded")
+                loadPaths: ["./packages", "./node_modules/@uswds"],
+                implementation: require("sass-embedded"),
               },
             },
           },
@@ -133,8 +128,11 @@ module.exports = {
             name: "[path][name].[ext]",
           },
         },
-        include: path.resolve(__dirname, "../packages/uswds-core/src/assets/fonts"),
-      }
+        include: path.resolve(
+          __dirname,
+          "../packages/uswds-core/src/assets/fonts",
+        ),
+      },
     );
 
     return config;
